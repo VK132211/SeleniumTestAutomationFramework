@@ -1,0 +1,13 @@
+{
+  "environments": {
+    "QA": {
+      "url": "https://automationpractice.techwithjatin.com/"
+    },
+    "DEV": {
+      "url": ""
+    },
+    "UAT": {
+      "url": ""
+    }
+  }
+}
