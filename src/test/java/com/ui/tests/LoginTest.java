@@ -6,6 +6,7 @@ import com.ui.pages.HomePage;
 
 import static org.testng.Assert.*;
 
+import com.ui.pojo.User;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -18,9 +19,9 @@ public class LoginTest {
 
     }
 
-    @Test(description = "Verifies with valid user is able to login to the application", groups = {"e2e", "sanity"})
-    public void Login() {
+    @Test(description = "Verifies with valid user is able to login to the application", groups = {"e2e", "sanity"}, dataProviderClass = com.ui.dataproviders.LoginDataProvider.class,dataProvider = "LoginTestDataProvider")
+    public void Login(User user) {
 
-        assertEquals(homePage.goToLoginPage().doLoginWith("dummy6thmay@test.com", "12345").getUserName(), "Ffaga gdgdg");
+        assertEquals(homePage.goToLoginPage().doLoginWith(user.getEmailAddress(), user.getPassword()).getUserName(), "Ffaga gdgdg");
     }
 }
