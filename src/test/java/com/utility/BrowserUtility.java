@@ -8,9 +8,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.slf4j.Logger;
 
 public abstract class BrowserUtility {
     private WebDriver driver;
+    Logger logger = LoggerUtility.getLogger(this.getClass());
+
 
     public WebDriver getDriver() {
         return driver;
@@ -52,21 +55,26 @@ public abstract class BrowserUtility {
     }
 
     public void goToWebsite(String url){
+        logger.info("Going to URL: " + url);
         driver.get(url);
     }
     public void maximizeWindow(){
+        logger.info("Maximizing Window");
         driver.manage().window().maximize();
     }
     public void clickOn(By locator){
+        logger.info("Clicking on locator: " + locator);
         WebElement webElement = driver.findElement(locator);
         webElement.click();
     }
     public void enterText(By locator, String value){
+        logger.info("Entering text: " + value);
         WebElement webElement = driver.findElement(locator);
         webElement.sendKeys(value);
     }
 
     public String visibleText(By locator){
+        logger.info("Visible text: " + locator);
         WebElement webElement = driver.findElement(locator);
         return webElement.getText();
     }
