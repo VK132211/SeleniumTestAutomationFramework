@@ -4,8 +4,11 @@ import com.constants.Browser;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
@@ -32,8 +35,8 @@ public abstract class BrowserUtility {
         driver.set(createDriver(browserName));
     }
 
-    public BrowserUtility(Browser browserName) {
-        driver.set(createDriver(browserName));
+    public BrowserUtility(Browser browserName,boolean headless) {
+        driver.set(createDriver(browserName, headless));
     }
 
     private WebDriver createDriver(String browserName) {
@@ -49,15 +52,31 @@ public abstract class BrowserUtility {
         throw new IllegalArgumentException("Invalid browser name: " + browserName);
     }
 
-    private WebDriver createDriver(Browser browserName) {
-        if (browserName == Browser.CHROME) {
-            return new ChromeDriver();
+    private WebDriver createDriver(Browser browserName, boolean headless) {
+        if (browserName == Browser.CHROME ) {
+            ChromeOptions options = new ChromeOptions();
+            if (headless) {
+                options.addArguments("--headless=old");
+                options.addArguments("--window-size=1920,1080");
+            }
+            return new ChromeDriver(options);
+
         } else if (browserName == Browser.FIREFOX) {
-            return new FirefoxDriver();
+            FirefoxOptions options = new FirefoxOptions();
+            if (headless) {
+            options.addArguments("--headless=old");
+            options.addArguments("--window-size=1920,1080");
+            }
+            return new FirefoxDriver(options);
         } else if (browserName == Browser.SAFARI) {
             return new SafariDriver();
         } else if (browserName == Browser.EDGE) {
-            return new EdgeDriver();
+            EdgeOptions options = new EdgeOptions();
+            if (headless) {
+            options.addArguments("--headless=old");
+            options.addArguments("--window-size=1920,1080");
+            }
+            return new EdgeDriver(options);
         }
         throw new IllegalArgumentException("Invalid browser name: " + browserName);
     }
