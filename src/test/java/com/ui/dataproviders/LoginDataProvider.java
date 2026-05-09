@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static com.utility.CSVReaderUtility.readCSVFile;
+
 public class LoginDataProvider {
     @DataProvider(name = "LoginTestDataProvider")
     public Iterator<Object[]> loginDataProvider() {
@@ -33,4 +35,10 @@ public class LoginDataProvider {
             }
         }
     }
+    @DataProvider(name = "LoginCSVTestDataProvider")
+    public Iterator<User> loginCSVDataProvider(){
+        return readCSVFile("loginData.csv");
+
+    }
+
 }

@@ -24,4 +24,10 @@ public class LoginTest {
 
         assertEquals(homePage.goToLoginPage().doLoginWith(user.getEmailAddress(), user.getPassword()).getUserName(), "Ffaga gdgdg");
     }
+
+    @Test(description = "Verifies with valid user is able to login to the application", groups = {"e2e", "sanity"}, dataProviderClass = com.ui.dataproviders.LoginDataProvider.class,dataProvider = "LoginCSVTestDataProvider")
+    public void LoginWithCSVData(User user) {
+
+        assertEquals(homePage.goToLoginPage().doLoginWith(user.getEmailAddress(), user.getPassword()).getUserName(), "Ffaga gdgdg");
+    }
 }
