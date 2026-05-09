@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static com.utility.CSVReaderUtility.readCSVFile;
+import static com.utility.ExcelReaderUtility.readExcelFile;
 
 public class LoginDataProvider {
     @DataProvider(name = "LoginTestDataProvider")
@@ -25,8 +26,8 @@ public class LoginDataProvider {
                 fileReader = new FileReader(testDataFile);
                 TestData testData = gson.fromJson(fileReader, TestData.class);
                 ArrayList<Object[]> dataToReturn = new ArrayList<>();
-                for(User user:testData.getData()){
-                    dataToReturn.add(new Object[] {user});
+                for (User user : testData.getData()) {
+                    dataToReturn.add(new Object[]{user});
 
                 }
                 return dataToReturn.iterator();
@@ -35,10 +36,16 @@ public class LoginDataProvider {
             }
         }
     }
+
     @DataProvider(name = "LoginCSVTestDataProvider")
-    public Iterator<User> loginCSVDataProvider(){
+    public Iterator<User> loginCSVDataProvider() {
         return readCSVFile("loginData.csv");
 
+    }
+
+    @DataProvider(name = "LoginExcelTestDataProvider")
+    public Iterator<User> loginExcelDataProvider() {
+        return readExcelFile("loginData.xlsx");
     }
 
 }
