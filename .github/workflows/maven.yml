@@ -16,6 +16,9 @@ on:
   pull_request:
     branches: [ "master" ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -47,6 +50,7 @@ jobs:
       with:
         name: screenshots
         path: screenshots/
+        if-no-files-found: ignore
         
     - name: upload test reports
       if: always()
@@ -59,19 +63,26 @@ jobs:
       run: echo "Test Execution Completed"
 
     - name: copy report to gh-pages folder
-      if: always()
+      if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
         mkdir -p public/extent-reports
-        cp -R report.html  public/extent-reports/
-        cp -R screenshots/ public/extent-reports/screenshots/
-        ls -l
+        if [ -f report.html ]; then
+          cp report.html public/extent-reports/index.html
+          cp report.html public/extent-reports/report.html
+        else
+          echo "<html><body><h1>Extent report was not generated</h1></body></html>" > public/extent-reports/index.html
+        fi
+        if [ -d screenshots ]; then
+          cp -R screenshots public/extent-reports/screenshots
+        fi
+        find public/extent-reports -maxdepth 2 -type f -print
 
     - name: deploy
-      if: always()
+      if: ${{ always() && github.event_name != 'pull_request' }}
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: public/extent-reports/
-        token: ${{ secrets.MSWithSB }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         clean: true
     
          
