@@ -24,6 +24,10 @@ public class ExtentReportUtility {
         return extentTest.get();
     }
 
+    public static void removeTest(){
+        extentTest.remove();
+    }
+
     public static void flushReport(){
         extentReports.flush();
     }

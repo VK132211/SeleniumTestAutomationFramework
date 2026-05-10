@@ -56,7 +56,7 @@ public abstract class BrowserUtility {
         if (browserName == Browser.CHROME ) {
             ChromeOptions options = new ChromeOptions();
             if (headless) {
-                options.addArguments("--headless=old");
+                options.addArguments("--headless=new");
                 options.addArguments("--window-size=1920,1080");
             }
             return new ChromeDriver(options);
@@ -64,7 +64,7 @@ public abstract class BrowserUtility {
         } else if (browserName == Browser.FIREFOX) {
             FirefoxOptions options = new FirefoxOptions();
             if (headless) {
-            options.addArguments("--headless=old");
+            options.addArguments("--headless");
             options.addArguments("--window-size=1920,1080");
             }
             return new FirefoxDriver(options);
@@ -73,7 +73,7 @@ public abstract class BrowserUtility {
         } else if (browserName == Browser.EDGE) {
             EdgeOptions options = new EdgeOptions();
             if (headless) {
-            options.addArguments("--headless=old");
+            options.addArguments("--headless=new");
             options.addArguments("--window-size=1920,1080");
             }
             return new EdgeDriver(options);
@@ -113,7 +113,7 @@ public abstract class BrowserUtility {
         logger.info("Taking screenshot: {}", name);
         TakesScreenshot screenshot = (TakesScreenshot) getDriver();
         String screenshotName = name + "--" + formatDate(new Date()) + ".png";
-        String path = System.getProperty("user.dir") + "//screenshots//" + screenshotName;
+        String path = "./screenshots/" + screenshotName;
         try {
             File screenshotData = screenshot.getScreenshotAs(OutputType.FILE);
             File screenshotFile = new File(path);

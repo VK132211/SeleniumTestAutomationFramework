@@ -33,25 +33,41 @@ public class TestListener implements ITestListener{
     public void onTestSuccess(ITestResult result) {
         // not implemented
         logger.info("{} passed", result.getMethod().getMethodName());
-        getTest().log(Status.PASS, result.getMethod().getMethodName()+"Passed");
+        if (getTest() != null) {
+            getTest().log(Status.PASS, result.getMethod().getMethodName()+"Passed");
+            removeTest();
+        }
     }
 
 
     public void onTestFailure(ITestResult result) {
         logger.error("{} failed", result.getMethod().getMethodName());
-        getTest().log(Status.FAIL, result.getMethod().getMethodName()+"Failed");
+        if (getTest() != null) {
+            getTest().log(Status.FAIL, result.getMethod().getMethodName()+"Failed");
+        }
         Object testclass = result.getInstance();
         BrowserUtility browserUtility = ((TestBase) testclass).getInstance();
+        if (browserUtility == null || browserUtility.getDriver() == null) {
+            logger.warn("Skipping screenshot because browser was not initialized");
+            removeTest();
+            return;
+        }
         logger.info("Capturing the screenshot for the failed test");
         String screenshotPath = browserUtility.takeScreenshot(result.getMethod().getMethodName());
         logger.info("Attaching the screenshot for the failed test to the report");
-        getTest().addScreenCaptureFromPath(screenshotPath);
+        if (getTest() != null) {
+            getTest().addScreenCaptureFromPath(screenshotPath);
+            removeTest();
+        }
     }
 
 
    public void onTestSkipped(ITestResult result) {
        logger.warn("{} skipped", result.getMethod().getDescription());
-       getTest().log(Status.SKIP, result.getMethod().getMethodName()+"Skipped");
+       if (getTest() != null) {
+           getTest().log(Status.SKIP, result.getMethod().getMethodName()+"Skipped");
+           removeTest();
+       }
     }
 
     public void onStart(ITestContext context) {

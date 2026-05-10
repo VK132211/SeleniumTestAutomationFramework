@@ -13,10 +13,8 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import static com.utility.LambdaTestUtility.*;
 
-import static com.constants.Browser.CHROME;
-
 public class TestBase {
-    protected HomePage homePage;
+    private final ThreadLocal<HomePage> homePage = new ThreadLocal<>();
     Logger logger = LoggerUtility.getLogger(this.getClass());
 
     @BeforeMethod(description = "load the home page of the web app")
@@ -24,21 +22,29 @@ public class TestBase {
     public void setup(@Optional("chrome") String browser, @Optional("false") boolean isLambdaTest, @Optional("false") boolean isHeadless, ITestResult result) {
         WebDriver lambdaDriver;
         if(isLambdaTest){
-            lambdaDriver = initializeLambdaTestSession("chrome", result.getMethod().getMethodName());
-            homePage=new HomePage(lambdaDriver);
+            lambdaDriver = initializeLambdaTestSession(browser, result.getMethod().getMethodName());
+            homePage.set(new HomePage(lambdaDriver));
         }else {
             logger.info("set up the home page of the web app");
-            homePage = new HomePage(Browser.valueOf("chrome".toUpperCase()), isHeadless);
+            homePage.set(new HomePage(Browser.valueOf(browser.toUpperCase()), isHeadless));
         }
     }
 
+    protected HomePage getHomePage(){
+        return homePage.get();
+    }
+
     public BrowserUtility getInstance(){
-        return homePage;
+        return getHomePage();
     }
 
     @AfterMethod(description = "tear down the browser")
     public void tearDown(){
-        homePage.closeWindow();
+        HomePage currentHomePage = getHomePage();
+        if (currentHomePage != null) {
+            currentHomePage.closeWindow();
+            homePage.remove();
+        }
     }
 
 }
