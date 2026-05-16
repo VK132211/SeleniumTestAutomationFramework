@@ -43,6 +43,11 @@ public class LoginDataProvider {
 
     }
 
+    @DataProvider(name = "LoginCSVInvalidTestDataProvider")
+    public Iterator<User> loginCSVInvalidDataProvider() {
+        return readCSVFile("InvalidLoginData.csv");
+    }
+
     @DataProvider(name = "LoginExcelTestDataProvider")
     public Iterator<User> loginExcelDataProvider() {
         return readExcelFile("loginData.xlsx");

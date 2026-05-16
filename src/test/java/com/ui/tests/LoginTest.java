@@ -2,6 +2,7 @@ package com.ui.tests;
 
 import static org.testng.Assert.*;
 
+import com.ui.dataproviders.LoginDataProvider;
 import com.ui.listeners.MyRetryAnalyzer;
 import com.ui.pojo.User;
 
@@ -26,5 +27,10 @@ public class LoginTest extends TestBase {
     @Test(description = "Verifies with valid user is able to login to the application", groups = {"e2e", "sanity"}, dataProviderClass = com.ui.dataproviders.LoginDataProvider.class, dataProvider = "LoginExcelTestDataProvider", retryAnalyzer = MyRetryAnalyzer.class)
     public void LoginWithExcelData(User user) {
         assertEquals(getHomePage().goToLoginPage().doLoginWith(user.getEmailAddress(), user.getPassword()).getUserName(), "Ffaga gdgdg");
+    }
+
+    @Test(description = "Verifies Error Message when  user enters invalid credentials to login to the application", groups = {"e2e","sanity"}, dataProviderClass = LoginDataProvider.class, dataProvider = "LoginCSVInvalidTestDataProvider")
+    public void LoginWithInvalidCredentials(User user) {
+        assertEquals(getHomePage().goToLoginPage().doLoginWithInvalidCredentials(user.getEmailAddress(), user.getPassword()).getErrorMessage(),"Authentication failed.");
     }
 }

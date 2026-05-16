@@ -17,6 +17,7 @@
                 <configuration>
                     <source>25</source>
                     <target>25</target>
+                    <proc>full</proc>
                 </configuration>
             </plugin>
             <plugin>
@@ -29,7 +30,7 @@
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <browser>chrome</browser>
-                        <isHeadless>true</isHeadless>
+                        <isHeadless>false</isHeadless>
                         <isLambdaTest>false</isLambdaTest>
                     </systemPropertyVariables>
                 </configuration>
@@ -109,6 +110,22 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j2-impl</artifactId>
             <version>2.26.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.46</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
             <scope>compile</scope>
         </dependency>
 
