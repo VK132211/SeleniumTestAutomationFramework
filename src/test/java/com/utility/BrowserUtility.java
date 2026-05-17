@@ -10,6 +10,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -18,7 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public abstract class BrowserUtility {
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
@@ -100,8 +103,13 @@ public abstract class BrowserUtility {
 
     public void clickOn(By locator) {
         logger.info("Clicking on locator: {}", locator);
-        WebElement webElement = getDriver().findElement(locator);
+        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(locator));
         webElement.click();
+    }
+
+    public void clickOn(WebElement element) {
+        logger.info("Clicking on element: {}", element);
+        element.click();
     }
 
     public void enterText(By locator, String value) {
@@ -110,10 +118,37 @@ public abstract class BrowserUtility {
         webElement.sendKeys(value);
     }
 
+    public void enterSpecialKey(By locator, Keys key) {
+        logger.info("Entering Key: {}", key);
+        WebElement webElement = getDriver().findElement(locator);
+        webElement.sendKeys(key);
+    }
+
+    public List<String> getAllVisibleText(By locator) {
+        logger.info("Finding All elements of locator: {}", locator);
+        List<WebElement> elementList = getDriver().findElements(locator);
+        List<String> visibleTextList = new ArrayList<String>();
+        for (WebElement element : elementList) {
+            visibleTextList.add(visibleText(element));
+        }
+        return visibleTextList;
+    }
+
     public String visibleText(By locator) {
-        logger.info("Visible text: {}", locator);
+        logger.info("Visible text by locator: {}", locator);
         WebElement webElement = getDriver().findElement(locator);
         return webElement.getText();
+    }
+
+    public String visibleText(WebElement element) {
+        logger.info("Visible text by element: {}", element);
+        return element.getText();
+    }
+
+    public List<WebElement> getAllElements(By locator) {
+        logger.info("Finding All elements of given locator: {}", locator);
+        List<WebElement> elementList = getDriver().findElements(locator);
+        return elementList;
     }
 
     public void clearText(By locator) {
